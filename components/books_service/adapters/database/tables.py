@@ -24,11 +24,11 @@ naming_convention = {
 
 metadata = MetaData(naming_convention=naming_convention)
 
-users = Table(
-    'Users',
+books = Table(
+    'Books',
     metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('name', String(128), nullable=False),
-    Column('login', String(128), nullable=False),
-    Column('password', String(256), nullable=False),
+    Column('author', String(128), nullable=False),
+    Column('available', Boolean, default=False),
 )

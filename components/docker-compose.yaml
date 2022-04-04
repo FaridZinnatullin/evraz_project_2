@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-  postresdb:
+  postgresdb:
     build:
       context: ./postgres
       dockerfile: Dockerfile
@@ -19,12 +19,24 @@ services:
     ports:
       - "1234:1234"
     environment:
-      - POSTGRES_DB_HOST=postresdb
+      - POSTGRES_DB_HOST=postgresdb
     entrypoint:
       - ./entrypoint.sh
-      - postgresdb
     depends_on:
-      - postresdb
+      - postgresdb
+
+  books_service:
+    build:
+      context: ./books_service
+      dockerfile: Dockerfile
+    ports:
+      - "5678:5678"
+    environment:
+      - POSTGRES_DB_HOST=postgresdb
+    entrypoint:
+      - ./entrypoint.sh
+    depends_on:
+      - postgresdb
 
   nginx:
     build:

@@ -26,12 +26,15 @@ class UsersManager:
     @join_point
     @validate_with_dto
     def registration(self, user_data: UserInfo):
-        if self.user_repo.check_user_login(user_data.login):
+        if self.users_repo.check_user_login(user_data.login):
             raise errors.UserAlreadyExist()
         else:
-            user_data.password = hashlib.sha256(bytes(user_data.password)).hexdigest()
-            user = self.users_repo.add_instance(user_data)
-            return user
+            user_data.password = hashlib.sha256(bytes(user_data.password, encoding='utf-8')).hexdigest()
+            user = User(login=user_data.login,
+                        password=user_data.password,
+                        name=user_data.name)
+            self.users_repo.add_instance(user)
+
 
     @join_point
     @validate_arguments
@@ -63,7 +66,7 @@ class UsersManager:
     @join_point
     @validate_arguments
     def login(self, login: str, password: str):
-        password = hashlib.sha256(bytes(password)).hexdigest()
+        password = hashlib.sha256(bytes(password, encoding='utf-8')).hexdigest()
         user = self.users_repo.authorization(login, password)
         if user:
             return user

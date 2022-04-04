@@ -23,10 +23,15 @@ class UserRepo(ABC):
         pass
 
     @abstractmethod
+    def check_user_login(self, user_login: Optional[str]) -> bool:
+        pass
+
+    @abstractmethod
     def update_by_id(self, user: User):
         pass
 
     @abstractmethod
     def authorization(self, login: str, password: str):
         pass
+
 
