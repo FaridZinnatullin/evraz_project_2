@@ -15,11 +15,11 @@ class Settings(BaseSettings):
         # PG_DBNAME = os.getenv('POSTGRES_NAME')
         # PG_HOST= os.getenv('POSTGRES_HOST')
         # PG_PORT = os.getenv('POSTGRES_PORT')
-
+        HOST = os.getenv('POSTGRES_DB_HOST', 'localhost')
         PG_USER = 'barash'
         PG_PASSWORD = 'test_password'
         PG_DBNAME = 'evraz_project_2_users_service'
         PG_HOST = 'localhost'
         PG_PORT = '5432'
 
-        return f"postgresql://{PG_USER}:{PG_PASSWORD}@{PG_HOST}:{PG_PORT}/{PG_DBNAME}"
+        return f"postgresql://{PG_USER}:{PG_PASSWORD}@{HOST}:{PG_PORT}/{PG_DBNAME}"

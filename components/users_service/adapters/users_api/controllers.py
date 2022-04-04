@@ -7,7 +7,7 @@ from classic.http_auth import (
     authenticator_needed,
     authorize,
 )
-from components.users_service.application import services
+from application import services
 from .auth import Groups, Permissions
 from .join_points import join_point
 

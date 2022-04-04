@@ -4,10 +4,10 @@
 # import pytest
 # import attr
 # from conftest import creator
-# from components.chat_backend.application import errors
+# from chat_backend.application import errors
 # from attr import asdict
 #
-# from components.chat_backend.application.services import ChatManager
+# from chat_backend.application.services import ChatManager
 #
 #
 # # @pytest.fixture(scope='function')

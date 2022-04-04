@@ -3,7 +3,7 @@
 # import attr
 # import pytest
 #
-# from components.chat_backend.application import interfaces, dataclasses
+# from chat_backend.application import interfaces, dataclasses
 #
 #
 # @pytest.fixture(scope='function')

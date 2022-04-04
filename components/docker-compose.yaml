@@ -19,7 +19,7 @@ services:
     ports:
       - "1234:1234"
     environment:
-      - POSTGRES_DB_HOST=postresdb:5432
+      - POSTGRES_DB_HOST=postresdb
     entrypoint:
       - ./entrypoint.sh
       - postgresdb

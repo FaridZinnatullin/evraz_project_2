@@ -2,8 +2,8 @@ from sqlalchemy import create_engine
 
 from classic.sql_storage import TransactionContext
 
-from components.users_service.adapters import database, users_api
-from components.users_service.application import services
+from adapters import database, users_api
+from application import services
 
 
 class Settings:

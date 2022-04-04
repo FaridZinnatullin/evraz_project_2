@@ -3,10 +3,10 @@ from typing import Optional
 from classic.components import component
 from classic.sql_storage import BaseRepository
 import hashlib
-from components.users_service.application.dataclasses import User
+from application.dataclasses import User
 from sqlalchemy.sql import select
-from components.users_service.adapters.database.tables import users as USERS_TABLE
-from components.users_service.application import interfaces
+from adapters.database.tables import users as USERS_TABLE
+from application import interfaces
 
 
 @component
