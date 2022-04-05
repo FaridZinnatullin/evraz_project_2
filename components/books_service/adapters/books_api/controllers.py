@@ -31,6 +31,7 @@ class Books:
     @join_point
     def on_post_create(self, request, response):
         # request.media['book_id'] = request.context.client.book_id
+        print("555")
         self.books_manager.create(**request.media)
 
 

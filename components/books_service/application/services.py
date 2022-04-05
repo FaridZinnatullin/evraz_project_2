@@ -1,9 +1,11 @@
-from typing import List, Optional
-import hashlib
+from classic.app import DTO, validate_with_dto
 from classic.aspects import PointCut
 from classic.components import component
+from classic.messaging import Message, Publisher
+from classic.messaging_kombu import BrokerScheme, KombuPublisher
+from kombu import Exchange, Queue, Connection
 from pydantic import validate_arguments
-from classic.app import DTO, validate_with_dto
+from attr import asdict
 
 from . import errors, interfaces
 from .dataclasses import Book
@@ -22,14 +24,23 @@ class BookInfo(DTO):
 @component
 class BooksManager:
     books_repo: interfaces.BookRepo
+    publisher: Publisher
 
     @join_point
     @validate_with_dto
     def create(self, book_data: BookInfo):
+
         book = Book(name=book_data.name,
                     author=book_data.author,
                     available=book_data.available)
         self.books_repo.add_instance(book)
+
+        self.publisher.plan(
+            Message('LogsExchange', {'action': 'create',
+                                     'object_type': 'book',
+                                     'object_info': book_data.__dict__
+                                     })
+        )
 
 
     @join_point
@@ -58,5 +69,3 @@ class BooksManager:
     @validate_with_dto
     def update_book(self, book_data: BookInfo):
         pass
-
-
