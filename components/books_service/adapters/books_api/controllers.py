@@ -4,7 +4,9 @@ import os
 import jwt
 from classic.components import component
 from classic.http_auth import (
+    authenticate,
     authenticator_needed,
+    authorize,
 )
 
 from application import services
@@ -29,15 +31,26 @@ class Books:
         response.media = result
 
     @join_point
+    # @authenticate
+    def on_post_take_book(self, request, response):
+        # request.media['user_id'] = request.context.client.user_id
+
+        self.books_manager.get_book(**request.media)
+
+    @join_point
+    # @authenticate
+    def on_post_return_book(self, request, response):
+        # request.media['user_id'] = request.context.client.user_id
+        self.books_manager.return_book(**request.media)
+
+
+    @join_point
     def on_post_create(self, request, response):
-        # request.media['book_id'] = request.context.client.book_id
-        print("555")
         self.books_manager.create(**request.media)
 
 
     @join_point
     def on_post_delete(self, request, response):
-        # request.media['book_id'] = request.context.client.book_id
         self.books_manager.delete_book(**request.media)
 
     @join_point

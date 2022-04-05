@@ -1,3 +1,3 @@
 #!/usr/bin/env sh
 
-gunicorn run:app --reload -w 1
+gunicorn --bind 0.0.0.0:1234 run:app --reload -w 1

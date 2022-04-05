@@ -24,3 +24,7 @@ class Bannedbook(AppError):
 class UncorrectedLoginPassword(AppError):
     msg_template = "Incorrect bookname or password"
     code = 'books.authorization'
+
+class BookIsUnavailable(AppError):
+    msg_template = "Sorry, but book is unavailable"
+    code = 'books.unavailable'

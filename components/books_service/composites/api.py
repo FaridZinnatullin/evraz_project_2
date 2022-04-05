@@ -54,8 +54,8 @@ app = books_api.create_app(
     books_manager=Application.books_manager,
 )
 
-if __name__ == '__main__':
-    from wsgiref import simple_server
-
-    with simple_server.make_server('', 8000, app=app) as server:
-        server.serve_forever()
+# if __name__ == '__main__':
+#     from wsgiref import simple_server
+#
+#     with simple_server.make_server('', 8000, app=app) as server:
+#         server.serve_forever()

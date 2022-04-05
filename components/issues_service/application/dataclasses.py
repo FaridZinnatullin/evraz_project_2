@@ -9,5 +9,5 @@ class Issue:
     action: Optional[str] = None
     object_type: Optional[str] = None
     object_id: Optional[int] = None
-    created_datetime: datetime.datetime = datetime.datetime.now()
+    # created_datetime: datetime.datetime = datetime.datetime.now()
 

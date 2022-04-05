@@ -1,5 +1,5 @@
 from wsgiref import simple_server
+from threading import Thread
 from composites.api import app
+from composites.api import MessageBus
 
-httpd = simple_server.make_server('0.0.0.0', 8002, app)
-httpd.serve_forever()

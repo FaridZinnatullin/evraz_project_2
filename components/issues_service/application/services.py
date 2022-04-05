@@ -1,7 +1,6 @@
 from classic.app import DTO, validate_with_dto
 from classic.aspects import PointCut
 from classic.components import component
-from classic.messaging import Message, Publisher
 from pydantic import validate_arguments
 
 from . import errors, interfaces
@@ -21,19 +20,18 @@ class IssueInfo(DTO):
 @component
 class IssuesManager:
     issues_repo: interfaces.IssueRepo
-    publisher: Publisher
 
     @join_point
-    @validate_with_dto
-    def create(self, issue_data: IssueInfo):
+    # @validate_with_dto
+    def create(self, action, object_type, object_id):
 
-        issue = Issue(action=issue_data.action,
-                      object_type=issue_data.object_type,
-                      object_id=issue_data.object_id,
-                      )
+        issue = Issue(
+            action=action,
+            object_type=object_type,
+            object_id=object_id,
+        )
 
         self.issues_repo.add_instance(issue)
-
 
     @join_point
     @validate_arguments

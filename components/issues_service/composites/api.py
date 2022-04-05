@@ -1,61 +1,55 @@
 from classic.sql_storage import TransactionContext
-from sqlalchemy import create_engine
-
-from adapters import database, issues_api, message_bus
-from application import services
-
 from kombu import Connection
-from classic.messaging_kombu import KombuPublisher
+from sqlalchemy import create_engine
+from threading import Thread
+from adapters import database, message_bus, issues_api
+from application import services
 
 
 class Settings:
     db = database.Settings()
-    issues_api = issues_api.Settings()
+    # issue_api = issues_api.Settings()
     message_bus = message_bus.Settings()
 
 
 class DB:
-    engine = create_engine(Settings.db.DB_URL, echo=True)
-    # database.metadata.drop_all(engine)
+    engine = create_engine(Settings.db.DB_URL)
     database.metadata.create_all(engine)
-    context = TransactionContext(bind=engine)
 
+    context = TransactionContext(bind=engine, expire_on_commit=False)
     issues_repo = database.repositories.IssueRepo(context=context)
+
+
+class Application:
+    issues = services.IssuesManager(
+        issues_repo=DB.issues_repo,
+    )
+    # is_dev_mode = Settings.issue_api.IS_DEV_MODE
+    # allow_origins = Settings.issue_api.ALLOW_ORIGINS
 
 
 class MessageBus:
     connection = Connection(Settings.message_bus.BROKER_URL)
-    message_bus.broker_scheme.declare(connection)
+    consumer = message_bus.create_consumer(connection, Application.issues)
 
-    publisher = KombuPublisher(
-        connection=connection,
-        scheme=message_bus.broker_scheme,
-
-    )
-
-
-class Application:
-    issues_manager = services.IssuesManager(
-        issues_repo=DB.issues_repo,
-        publisher=MessageBus.publisher,
-    )
-    is_dev_mode = Settings.issues_api.IS_DEV_MODE
-    allow_origins = Settings.issues_api.ALLOW_ORIGINS
+    @staticmethod
+    def declare_scheme():
+        message_bus.broker_scheme.declare(MessageBus.connection)
 
 
 class Aspects:
     services.join_points.join(DB.context)
-    issues_api.join_points.join(MessageBus.publisher, DB.context)
+    issues_api.join_points.join(DB.context)
+
+
+MessageBus.declare_scheme()
+consumer = Thread(target=MessageBus.consumer.run, daemon=True)
+consumer.start()
 
 
 app = issues_api.create_app(
-    is_dev_mode=Application.is_dev_mode,
-    allow_origins=Application.allow_origins,
-    issues_manager=Application.issues_manager,
+    # is_dev_mode=Application.is_dev_mode,
+    # allow_origins=Application.allow_origins,
+    issues_manager=Application.issues,
 )
 
-if __name__ == '__main__':
-    from wsgiref import simple_server
-
-    with simple_server.make_server('', 8000, app=app) as server:
-        server.serve_forever()

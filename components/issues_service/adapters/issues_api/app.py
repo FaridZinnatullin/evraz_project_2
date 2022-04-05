@@ -7,9 +7,7 @@ from application import services
 from . import auth, controllers
 
 
-def create_app(is_dev_mode: bool,
-               allow_origins: Union[str, Tuple[str, ...]],
-               issues_manager: services.IssuesManager, ) -> App:
+def create_app(issues_manager: services.IssuesManager, ) -> App:
 
     authenticator = Authenticator(app_groups=auth.ALL_GROUPS)
     authenticator.set_strategies(auth.jwt_strategy)

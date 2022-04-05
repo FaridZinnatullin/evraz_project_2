@@ -31,5 +31,5 @@ issues = Table(
     Column('action', String(128), nullable=False),
     Column('object_type', String(128), nullable=False),
     Column('object_id', Integer, nullable=False),
-    Column('datetime', DateTime, default=datetime.datetime.now()),
+    # Column('datetime', DateTime, default=datetime.datetime.now()),
 )

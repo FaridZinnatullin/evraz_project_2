@@ -2,10 +2,7 @@ from classic.app import DTO, validate_with_dto
 from classic.aspects import PointCut
 from classic.components import component
 from classic.messaging import Message, Publisher
-from classic.messaging_kombu import BrokerScheme, KombuPublisher
-from kombu import Exchange, Queue, Connection
 from pydantic import validate_arguments
-from attr import asdict
 
 from . import errors, interfaces
 from .dataclasses import Book
@@ -33,15 +30,14 @@ class BooksManager:
         book = Book(name=book_data.name,
                     author=book_data.author,
                     available=book_data.available)
-        self.books_repo.add_instance(book)
+        book = self.books_repo.add_instance(book)
 
         self.publisher.plan(
             Message('LogsExchange', {'action': 'create',
                                      'object_type': 'book',
-                                     'object_info': book_data.__dict__
+                                     'object_id': book.id
                                      })
         )
-
 
     @join_point
     @validate_arguments
@@ -65,7 +61,53 @@ class BooksManager:
         else:
             raise errors.UncorrectedParams()
 
+        self.publisher.plan(
+            Message('LogsExchange', {'action': 'delete',
+                                     'object_type': 'book',
+                                     'object_id': book.id
+                                     })
+        )
+
     @join_point
-    @validate_with_dto
-    def update_book(self, book_data: BookInfo):
-        pass
+    @validate_arguments
+    def get_book(self, book_id: int, user_id: int):
+        book = self.get_book_by_id(book_id)
+        if book:
+            if book.available:
+                book.available = False
+                self.books_repo.add_instance(book)
+                self.publisher.plan(
+                    Message('LogsExchange', {'action': 'get book',
+                                             'object_type': 'book',
+                                             'object_id': book_id
+                                             }),
+
+                    Message('LogsExchange', {'action': 'user get book',
+                                             'object_type': 'user',
+                                             'object_id': user_id
+                                             })
+                )
+            else:
+                raise errors.BookIsUnavailable
+        else:
+            raise errors.UncorrectedParams
+
+
+    @join_point
+    @validate_arguments
+    def return_book(self, book_id: int, user_id: int):
+        book = self.get_book_by_id(book_id)
+        if book:
+            book.available = True
+            self.books_repo.add_instance(book)
+            self.publisher.plan(
+                Message('LogsExchange', {'action': 'return book',
+                                         'object_type': 'book',
+                                         'object_id': book_id
+                                         }),
+
+                Message('LogsExchange', {'action': 'user return book',
+                                         'object_type': 'user',
+                                         'object_id': user_id
+                                         })
+            )

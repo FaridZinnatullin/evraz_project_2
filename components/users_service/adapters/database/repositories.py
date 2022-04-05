@@ -22,6 +22,7 @@ class UsersRepo(BaseRepository, interfaces.UserRepo):
     def add_instance(self, user: User):
         self.session.add(user)
         self.session.flush()
+        return user
 
     def delete_by_id(self, user_id: int):
         user = self.get_by_id(user_id)

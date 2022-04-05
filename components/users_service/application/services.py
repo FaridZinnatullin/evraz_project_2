@@ -4,6 +4,7 @@ from classic.aspects import PointCut
 from classic.components import component
 from pydantic import validate_arguments
 from classic.app import DTO, validate_with_dto
+from classic.messaging import Message, Publisher
 
 from . import errors, interfaces
 from .dataclasses import User
@@ -22,6 +23,7 @@ class UserInfo(DTO):
 @component
 class UsersManager:
     users_repo: interfaces.UserRepo
+    publisher: Publisher
 
     @join_point
     @validate_with_dto
@@ -33,7 +35,15 @@ class UsersManager:
             user = User(login=user_data.login,
                         password=user_data.password,
                         name=user_data.name)
-            self.users_repo.add_instance(user)
+
+            user = self.users_repo.add_instance(user)
+
+        self.publisher.plan(
+            Message('LogsExchange', {'action': 'create',
+                                     'object_type': 'user',
+                                     'object_id': user.id
+                                     })
+        )
 
 
     @join_point
@@ -57,6 +67,13 @@ class UsersManager:
             self.users_repo.delete_by_id(user_id)
         else:
             raise errors.UncorrectedParams()
+
+        self.publisher.plan(
+            Message('LogsExchange', {'action': 'delete',
+                                     'object_type': 'user',
+                                     'object_id': user.id
+                                     })
+        )
 
     @join_point
     @validate_with_dto

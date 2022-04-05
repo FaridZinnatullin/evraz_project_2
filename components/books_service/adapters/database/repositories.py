@@ -22,6 +22,7 @@ class BookRepo(BaseRepository, interfaces.BookRepo):
     def add_instance(self, book: Book):
         self.session.add(book)
         self.session.flush()
+        return book
 
     def delete_by_id(self, book_id: int):
         book = self.get_by_id(book_id)
