@@ -30,7 +30,7 @@ services:
       context: ./books_service
       dockerfile: Dockerfile
     ports:
-      - "5678:5678"
+      - "8001:8001"
     environment:
       - POSTGRES_DB_HOST=postgresdb
     entrypoint:
