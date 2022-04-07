@@ -11,11 +11,9 @@ def service_book(books_repo, publisher):
 
 
 data_book = {
-    # 'id': 1,
     'name': 'book1',
     'author': 'author1',
     'available': False,
-    # 'user_taken': 1,
 }
 
 data_book_with_id = {
@@ -23,7 +21,7 @@ data_book_with_id = {
     'name': 'book1',
     'author': 'author1',
     'available': True,
-    # 'user_taken': 1,
+
 }
 
 
@@ -32,7 +30,7 @@ data_book2 = {
     'name': 'book2',
     'author': 'author2',
     'available': False,
-    # 'user_taken': None,
+
 }
 
 data_book3 = {
@@ -40,7 +38,7 @@ data_book3 = {
     'name': 'book3',
     'author': 'author3',
     'available': False,
-    # 'user_taken': None,
+
 }
 
 data_book5 = {

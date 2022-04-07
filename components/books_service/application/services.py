@@ -30,7 +30,8 @@ class BooksManager:
         book = Book(name=book_data.name,
                     author=book_data.author,
                     available=book_data.available)
-        if not self.books_repo.get_by_name_author:
+
+        if not self.books_repo.get_by_name_author(author=book_data.author, name=book_data.name):
             book = self.books_repo.add_instance(book)
 
             self.publisher.plan(

@@ -5,6 +5,7 @@ import jwt
 from classic.components import component
 from classic.http_auth import (
     authenticator_needed,
+    authenticate
 )
 
 from application import services
@@ -18,8 +19,9 @@ class Users:
 
 
     @join_point
+    @authenticate
     def on_get_user_info(self, request, response):
-        # request.params['user_id'] = request.context.client.user_id
+        request.params['user_id'] = int(request.context.client.user_id)
         user = self.users_manager.get_user_by_id(**request.params)
         result = {
             'user_id': user.id,
@@ -30,8 +32,9 @@ class Users:
         response.media = result
 
     @join_point
+    @authenticate
     def on_post_delete(self, request, response):
-        # request.media['user_id'] = request.context.client.user_id
+        # request.media['user_id'] = int(request.context.client.user_id)
         self.users_manager.delete_user(**request.media)
 
     @join_point

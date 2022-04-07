@@ -33,6 +33,6 @@ class BookRepo(BaseRepository, interfaces.BookRepo):
 
     def get_by_name_author(self, author: str, name: str):
         query = select(Book).where(and_(Book.name == name, Book.author == author))
-        book = self.session.execute(query).scalars().one_or_none()
+        book = self.session.execute(query).scalars().first()
         return book
 

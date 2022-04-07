@@ -33,6 +33,7 @@ services:
       - RABBITMQ_PASSWORD=password
       - RABBITMQ_HOST=rabbitmq
       - RABBITMQ_PORT=5672
+      - SECRET_JWT_KEY=SECRET_JWT_KEY
     entrypoint:
       - ./entrypoint.sh
     depends_on:
@@ -53,6 +54,7 @@ services:
       - RABBITMQ_PASSWORD=password
       - RABBITMQ_HOST=rabbitmq
       - RABBITMQ_PORT=5672
+      - SECRET_JWT_KEY=SECRET_JWT_KEY
     entrypoint:
       - ./entrypoint.sh
     depends_on:
@@ -72,6 +74,7 @@ services:
       - RABBITMQ_PASSWORD=password
       - RABBITMQ_HOST=rabbitmq
       - RABBITMQ_PORT=5672
+      - SECRET_JWT_KEY=SECRET_JWT_KEY
     entrypoint:
       - ./entrypoint.sh
     depends_on:
