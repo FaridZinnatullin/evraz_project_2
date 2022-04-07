@@ -3,7 +3,7 @@ from unittest.mock import Mock
 
 from classic.messaging import Publisher
 
-from application import interfaces, dataclasses
+from components.books_service.application import interfaces, dataclasses
 
 
 @pytest.fixture(scope='function')
@@ -12,7 +12,6 @@ def book():
         id=1,
         name='book1',
         available=False,
-        # user_taken=None,
     )
 
 
@@ -23,7 +22,6 @@ def book_taken():
         name='book1',
         author='author1',
         available=True,
-        # user_taken=1,
     )
 
 
@@ -34,7 +32,6 @@ def book2():
         name='book2',
         author='author2',
         available=False,
-        # user_taken=None,
     )
 
 

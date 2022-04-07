@@ -2,7 +2,7 @@ import pytest
 from attr import asdict
 from unittest.mock import Mock
 
-from application import services, errors
+from components.books_service.application import services, errors
 
 
 @pytest.fixture(scope='function')
