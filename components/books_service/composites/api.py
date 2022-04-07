@@ -30,7 +30,6 @@ class MessageBus:
     publisher = KombuPublisher(
         connection=connection,
         scheme=message_bus.broker_scheme,
-
     )
 
 
