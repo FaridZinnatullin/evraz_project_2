@@ -28,8 +28,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install --requirement "requirements.txt"
     - name: test user
-      run: pytest components/user_backend/tests/unit/tests.py
+      run: pytest components/users_service/tests/unit/tests.py
     - name: test book
-      run: pytest components/book_backend/tests/unit/tests.py
+      run: pytest components/books_service/tests/unit/tests.py
     - name: test issue
-      run: pytest components/issue_backend/tests/unit/tests.py
+      run: pytest components/issues_service/tests/unit/tests.py
