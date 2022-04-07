@@ -16,6 +16,7 @@ from .join_points import join_point
 class Users:
     users_manager: services.UsersManager
 
+
     @join_point
     def on_get_user_info(self, request, response):
         # request.params['user_id'] = request.context.client.user_id

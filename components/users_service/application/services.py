@@ -57,7 +57,7 @@ class UsersManager:
     @join_point
     @validate_arguments
     def get_all_users(self):
-        return self.get_all_users()
+        return self.users_repo.get_all()
 
     @join_point
     @validate_arguments

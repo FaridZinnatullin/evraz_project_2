@@ -20,7 +20,7 @@ class Books:
 
     @join_point
     def on_get_book_info(self, request, response):
-        # request.params['book_id'] = request.context.client.book_id
+        # request.params['user_id'] = int(request.context.client.book_id)
         book = self.books_manager.get_book_by_id(**request.params)
         result = {
             'book_id': book.id,

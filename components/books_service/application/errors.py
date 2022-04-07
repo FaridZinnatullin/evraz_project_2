@@ -28,3 +28,9 @@ class UncorrectedLoginPassword(AppError):
 class BookIsUnavailable(AppError):
     msg_template = "Sorry, but book is unavailable"
     code = 'books.unavailable'
+
+class BookAlreadyExist(AppError):
+    msg_template = "Book already exist"
+    code = 'book.already exist'
+
+

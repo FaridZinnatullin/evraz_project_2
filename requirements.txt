@@ -1,0 +1,10 @@
+pytest
+classic.messaging
+classic-components
+classic-aspects
+classic-http-api
+classic-app-layer
+classic-sql-storage
+classic-messaging
+classic-messaging-kombu
+backports.cached-property

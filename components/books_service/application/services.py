@@ -30,18 +30,21 @@ class BooksManager:
         book = Book(name=book_data.name,
                     author=book_data.author,
                     available=book_data.available)
-        book = self.books_repo.add_instance(book)
+        if not self.books_repo.get_by_name_author:
+            book = self.books_repo.add_instance(book)
 
-        self.publisher.plan(
-            Message('LogsExchange', {'action': 'create',
-                                     'object_type': 'book',
-                                     'object_id': book.id
-                                     })
-        )
+            self.publisher.plan(
+                Message('LogsExchange', {'action': 'create',
+                                         'object_type': 'book',
+                                         'object_id': book.id
+                                         })
+            )
+        else:
+            raise errors.BookAlreadyExist
 
     @join_point
     @validate_arguments
-    def get_book_by_id(self, book_id: int):
+    def get_book_by_id(self, book_id: int) -> Book:
         book = self.books_repo.get_by_id(book_id)
         if not book:
             raise errors.UncorrectedParams()
@@ -50,7 +53,7 @@ class BooksManager:
     @join_point
     @validate_arguments
     def get_all_books(self):
-        return self.get_all_books()
+        return self.books_repo.get_all()
 
     @join_point
     @validate_arguments

@@ -26,3 +26,7 @@ class BookRepo(ABC):
     def update_by_id(self, book: Book):
         pass
 
+    @abstractmethod
+    def get_by_name_author(self, author: str, name: str):
+        pass
+
