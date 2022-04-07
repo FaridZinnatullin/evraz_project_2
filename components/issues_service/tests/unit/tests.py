@@ -1,7 +1,7 @@
 import pytest
 from attr import asdict
 
-from application import services
+from components.issues_service.application import services
 
 
 @pytest.fixture(scope='function')
