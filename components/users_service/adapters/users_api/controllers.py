@@ -44,7 +44,7 @@ class Users:
     @join_point
     def on_post_login(self, request, response):
         user = self.users_manager.login(**request.media)
-        # TODO: Закинуть SECRET KEY в ENV
+        secret_jwt_key = os.getenv('SECRET_JWT_KEY')
         token = jwt.encode(
             {
                 "sub": user.id,
@@ -52,7 +52,7 @@ class Users:
                 "name": user.name,
                 "group": "User"
             },
-            'SECRET_JWT_KEY',
+            secret_jwt_key,
             algorithm="HS256"
         )
         response.media = {
